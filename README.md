@@ -23,3 +23,9 @@ pip install -r requirements.txt
 python app.py
 ```
 
+### Host Service
+
+```bash
+docker build -t gomu-file .
+docker run -p 8000:8000 gomu-file
+```
