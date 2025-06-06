@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>File Upload</title>
+    <link rel="stylesheet" href="{{ url_for('index.static', filename='css/index.css') }}">
+    <script src="{{ url_for('index.static', filename='js/FileUpload.js') }}"></script>
 </head>
 <body>
-    <h1>Index Page</h1>
+    <div class="container">
+        <h1>File Upload</h1>
+        <input type="file" id="fileInput" multiple>
+        <button id="uploadButton" onclick="uploadFiles()">Upload</button>
+        <div id="status"></div>
+    </div>
 </body>
 </html>
