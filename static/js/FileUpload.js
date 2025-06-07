@@ -23,11 +23,11 @@ document.addEventListener('DOMContentLoaded', function() { // dom이... 뭔진 �
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
         
-        fetch('/upload', {
+        fetch('/upload', { // formData를 body에 담아 /upload에 전달
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => response.json()) // 백엔드 요청 받기
         .then(data => {
             console.log(data);
             if (data.status === 0) {
