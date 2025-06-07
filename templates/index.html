@@ -10,7 +10,18 @@
 <body>
     <div class="container">
         <h1>File Upload</h1>
-        <input type="file" id="fileInput" multiple>
+        <div class="upload-container">
+            <input type="file" id="fileInput">
+            <div class="date-container">
+                <label for="date">기간</label>
+                <select id="date">
+                    <option value="1h">1시간</option>
+                    <option value="1d" selected>1일</option>
+                    <option value="3d">3일</option>
+                    <option value="7d">7일</option>
+                </select>
+            </div>
+        </div>
         <button id="uploadButton" class="disabled" onclick="uploadFiles()">Upload</button>
         <div id="status"></div>
     </div>

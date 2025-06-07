@@ -1,6 +1,10 @@
 from flask import Flask
 from blueprints.index import bp as index
 from blueprints.upload import bp as upload
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
