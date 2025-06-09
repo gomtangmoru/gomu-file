@@ -21,7 +21,7 @@ class Storage_DB:
         self.conn.commit()
         self.conn.close()
 
-    def insert_file(self, file_id, original_filename, filepath, expires_at):
+    def insert_file(self, file_id : str, original_filename : str, filepath : str, expires_at : str):
         cur = self.conn.cursor()
         cur.execute("""
             INSERT INTO files (file_id, original_filename, filepath, uploaded_at, expires_at)
@@ -30,14 +30,14 @@ class Storage_DB:
         self.conn.commit()
         self.conn.close()
 
-    def get_file(self, file_id):
+    def get_file(self, file_id : str):
         cur = self.conn.cursor()
         cur.execute("SELECT original_filename, filepath, expires_at FROM files WHERE file_id = ?", (file_id,))
         result = cur.fetchone()
         self.conn.close()
         return result
 
-    def delete_file(self, file_id):
+    def delete_file(self, file_id : str):
         cur = self.conn.cursor()
         cur.execute("DELETE FROM files WHERE file_id = ?", (file_id,))
         self.conn.commit()
