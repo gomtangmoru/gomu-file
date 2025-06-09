@@ -2,6 +2,16 @@ document.addEventListener('DOMContentLoaded', function() { // dom이... 뭔진 �
     const fileInput = document.getElementById('fileInput');
     const button = document.getElementById('uploadButton');
     const date = document.getElementById('date');
+    const link = document.getElementById('link');
+    const linkText = document.getElementById('link-text');
+    const copyButton = document.getElementById('copyButton');
+
+    function copyLink() {
+        const linkText = document.getElementById('link-text');
+        navigator.clipboard.writeText(linkText.href);
+        alert('링크가 복사되었습니다!');
+    }
+
     const MAX_SIZE = function(){
         const maxSize = fetch('/max-size')
         .then(response => response.json())
@@ -51,7 +61,11 @@ document.addEventListener('DOMContentLoaded', function() { // dom이... 뭔진 �
         .then(data => {
             console.log(data);
             if (data.status === 0) {
-                alert('성공');
+                const fileUrl = `https://file.gomtangmo.ru/file/${data.link}`;
+                alert(`업로드 성공!\n링크: ${fileUrl}`);
+                link.style.display = 'block';
+                linkText.href = fileUrl;
+                linkText.textContent = fileUrl;
             } else {
                 alert('백엔드 오류');
             }

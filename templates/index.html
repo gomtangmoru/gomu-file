@@ -23,7 +23,20 @@
             </div>
         </div>
         <button id="uploadButton" class="disabled" onclick="uploadFiles()">Upload</button>
-        <div id="status"></div>
+        <div id="link" style="display: none;" class="link-container">
+            <p>다운로드 링크:</p>
+            <div class="link-box">
+                <a id="link-text" target="_blank"></a>
+                <button onclick="copyLink()" class="copy-button">복사</button>
+            </div>
+        </div>
     </div>
+    <script>
+        function copyLink() {
+            const linkText = document.getElementById('link-text');
+            navigator.clipboard.writeText(linkText.href);
+            alert('링크가 복사되었습니다!');
+        }
+    </script>
 </body>
 </html>
