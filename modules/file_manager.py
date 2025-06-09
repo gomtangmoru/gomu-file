@@ -21,3 +21,9 @@ class File_Manager:
         shutil.move(file_path, os.path.join(self.target_location, rename_filename))
         self.storage_db.insert_file(link, original_filename, rename_filename, expires_at.isoformat())
         return link
+    
+    def get_file(self, link: str):
+        file_verify = self.storage_db.get_file_path(link)
+        if file_verify:
+            return os.path.join(self.target_location, file_verify)
+        return None

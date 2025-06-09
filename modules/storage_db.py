@@ -38,10 +38,18 @@ class Storage_DB:
     def get_file(self, file_id : str):
         conn = self.get_connection()
         cur = conn.cursor()
-        cur.execute("SELECT original_filename, filepath, expires_at FROM files WHERE file_id = ?", (file_id,))
+        cur.execute("SELECT original_filename FROM files WHERE file_id = ?", (file_id,))
         result = cur.fetchone()
         conn.close()
-        return result
+        return result[0] if result else None
+    
+    def get_file_path(self, file_id : str):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT filepath FROM files WHERE file_id = ?", (file_id,))
+        result = cur.fetchone()
+        conn.close()
+        return result[0] if result else None
 
     def delete_file(self, file_id : str):
         conn = self.get_connection()
@@ -49,3 +57,11 @@ class Storage_DB:
         cur.execute("DELETE FROM files WHERE file_id = ?", (file_id,))
         conn.commit()
         conn.close()
+
+    def get_expired_files(self):
+        conn = self.get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT file_id, filepath FROM files WHERE expires_at < ?", (datetime.now().isoformat(),))
+        result = cur.fetchall()
+        conn.close()
+        return result

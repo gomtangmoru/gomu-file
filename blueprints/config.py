@@ -1,9 +1,10 @@
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, send_file
 from dotenv import load_dotenv
 import os, logging
 from modules.cleaner import Cleaner
 from modules.file_manager import File_Manager as fm
 logger = logging.getLogger(__name__)
+
 
 load_dotenv()
 FileManager = fm()
@@ -40,10 +41,9 @@ def upload_file():
 
     # return jsonify({"error": "허용되지 않은 파일 형식"}), 400
 
-# NOT FOR USE
-
-# @bp.route('/files', methods=['GET'])
-# def list_files():
-#     files = os.listdir(app.config['UPLOAD_FOLDER'])
-#     return jsonify({"files": files})
-
+@bp.route('/file/<link>', methods=['GET'])
+def get_file(link):
+    file_path = FileManager.get_file(link)
+    if file_path:
+        return send_file(file_path, as_attachment=True)
+    return jsonify({"error": "파일을 찾을 수 없습니다"}), 404
