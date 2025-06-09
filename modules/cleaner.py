@@ -2,7 +2,7 @@ import os
 import sqlite3, logging, threading
 from time import sleep
 from datetime import datetime
-from modules.storage_db import delete_file
+from modules.storage_db import Storage_DB
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -11,12 +11,13 @@ class Cleaner:
     def __init__(self):
         self.conn = sqlite3.connect("data/storage.db")
         
+        
     def clean_folder(folder_path):
         """폴더 내 모든 파일 삭제"""
         for filename in os.listdir(folder_path):
             file_path = os.path.join(folder_path, filename)
             try:
-                if os.path.isfile(file_path):
+                if os.path.i sfile(file_path):
                     os.unlink(file_path)
                     delete_file(file_path)  # 파일 정보 DB에서도 제거 (옵션)
             except Exception as e:
@@ -47,7 +48,6 @@ class Auto_cleaner:
                     cur.execute("SELECT file_id, filepath, expires_at FROM files")
                     rows = cur.fetchall()
                     now = datetime.now()
-
                     for file_id, filepath, expires_at in rows:
                         try:
                             if now > datetime.fromisoformat(expires_at):

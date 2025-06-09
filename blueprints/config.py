@@ -1,21 +1,18 @@
-import os
-
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'data/uploads')
-# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-
 from flask import request, jsonify, Blueprint
-import os
 from dotenv import load_dotenv
-from werkzeug.utils import secure_filename
-import config
+import os, logging
+from modules.cleaner import Cleaner
+from modules.file_manager import File_Manager as fm
+logger = logging.getLogger(__name__)
 
 load_dotenv()
+FileManager = fm()
+Available_date = ['1h', '1d', '3d', '7d']
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'data/temp')
+# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 MAX_CONTENT_LENGTH = os.getenv('MAX_SIZE') * 1024 * 1024
-# app = Flask(__name__)
 bp = Blueprint('config', __name__)
 
-bp.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
-bp.config['MAX_CONTENT_LENGTH'] = config.MAX_CONTENT_LENGTH
 
 # def allowed_file(filename):
 #     return '.' in filename and \
@@ -26,13 +23,20 @@ def upload_file():
     if 'file' not in request.files:
         return jsonify({"error": "파일이 없습니다"}), 400
     file = request.files['file']
+    date = request.form['date']
+    if date not in Available_date:
+        return jsonify({"error": "시간 설정 오류"}), 400
     if file.filename == '':
         return jsonify({"error": "선택된 파일이 없습니다"}), 400
     # if file and allowed_file(file.filename):
     #     filename = secure_filename(file.filename)
     #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     #         return jsonify({"message": "업로드 성공", "filename": filename})
-    return jsonify({"message": "업로드 성공", "filename": file.filename})
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+    logger.info(f"업로드 성공 : {file.filename}")
+    link = FileManager.save_file(file_path, date)
+    return jsonify({"message": "업로드 성공", "link": link, "status": 0})
 
     # return jsonify({"error": "허용되지 않은 파일 형식"}), 400
 
