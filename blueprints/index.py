@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for
-import logging
-from datetime import datetime
+
 
 bp = Blueprint('index', __name__, 
                template_folder='templates',
